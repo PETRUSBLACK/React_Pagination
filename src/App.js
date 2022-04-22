@@ -4,13 +4,12 @@ import "./App.css";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory, {
   PaginationListStandalone,
-  PaginationProvider,
 } from "react-bootstrap-table2-paginator";
-import * as ReactBootStrap from "react-bootstrap";
+// import * as ReactBootStrap from "react-bootstrap";
 
 const App = () => {
   const [devs, setDevs] = useState([]);
-  const [loading, setLoading] = useState(false);
+//   const [loading, setLoading] = useState(false);
   const getPlayerData = async () => {
     try {
       const info = await axios.get(
