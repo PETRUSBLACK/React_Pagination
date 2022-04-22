@@ -1,25 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./App.css";
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory, {
+  PaginationListStandalone,
+  PaginationProvider,
+} from "react-bootstrap-table2-paginator";
+import * as ReactBootStrap from "react-bootstrap";
 
-function App() {
+const App = () => {
+  const [devs, setDevs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const getPlayerData = async () => {
+    try {
+      const info = await axios.get(
+        "https://swapi.dev/api/planets"
+      );
+      console.log(info.data.results);
+      setDevs(info.data.results);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const sizePerPage = 5;
+  const pageOptions = {
+    sizePerPage: sizePerPage,
+    totalSize: devs.length,
+  };
+  const columns = [
+    { dataField: "name", text: "Name" },
+    { dataField: "rotation_period", text: "Rotation period" },
+    { dataField: "orbital_period", text: "Orbital period" },
+    { dataField: "diameter", text: "Diameter" },
+    { dataField: "climate", text: "Climate" },
+  ];
+
+  useEffect(() => {
+    getPlayerData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BootstrapTable
+        keyField="name"
+        data={devs}
+        columns={columns}
+        pagination={paginationFactory(pageOptions)}
+      />
+      <PaginationListStandalone/>
     </div>
   );
-}
+};
 
 export default App;
